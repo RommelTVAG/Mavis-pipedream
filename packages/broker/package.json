@@ -6,12 +6,12 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "tsx --test test/*.test.ts",
-    "dev": "tsx scripts/dev-server.ts",
+    "dev": "node init && tsx scripts/dev-server.ts",
     "issue-code": "tsx scripts/admin.ts issue",
     "list-codes": "tsx scripts/admin.ts list",
     "revoke-code": "tsx scripts/admin.ts revoke",
-    "build": "tsc -p tsconfig.build.json",
-    "start": "node dist/src/server.js",
+    "build": "node init && tsc -p tsconfig.build.json",
+    "start": "node init && node dist/src/server.js",
     "vault": "tsx scripts/vault-admin.ts"
   },
   "dependencies": {

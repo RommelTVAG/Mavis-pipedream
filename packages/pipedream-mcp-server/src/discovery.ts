@@ -49,16 +49,16 @@ export async function discoverApps(
       const slug = account.app.name_slug;
       const existing = apps.get(slug);
 
+      const entry = { id: account.id, name: account.name?.trim() || null };
       if (existing) {
-        existing.accountIds.push(account.id);
+        existing.accounts.push(entry);
       } else {
         apps.set(slug, {
           slug,
           name: account.app.name,
-          accountIds: [account.id],
+          accounts: [entry],
           healthy: true,
           authType: account.app.auth_type,
-          accountName: account.name,
         });
       }
     }

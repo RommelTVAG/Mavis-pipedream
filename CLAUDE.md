@@ -33,6 +33,8 @@ Modes (`src/config.ts`):
 
 Flow: resolve auth → List Accounts API to discover apps → connect to each app's MCP endpoint in parallel → register all tools under one connection (`list_integrations` meta-tool included). Each client is a separate MCP server named `pipedream-<slug>`.
 
+Accounts: every healthy account is pinned with `x-pd-account-id` (`app-client.ts`), one connection per account. An app with one account keeps the tool names `<slug>-<tool>`; an app with several (e.g. three Outlook mailboxes) gets `<slug>-<account>-<tool>`, where `<account>` is the account name's part before `@` (`accountKeys` in `tool-registry.ts`, account id if empty or shared). Without the header Pipedream silently picks one account, so never remove it. `list_integrations` shows each account's `tool_prefix`.
+
 ### Verifying it works
 
 In a new Claude Code session, ask: *List my available integrations.* The agent should call `list_integrations` and return the apps connected in Pipedream. Apps Pipedream marks unhealthy are skipped until reconnected.

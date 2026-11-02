@@ -11,7 +11,15 @@ export interface AppTool {
   inputSchema?: Record<string, unknown>;
 }
 
-export class AppClient {
+/** What the registry needs from a per-account connection (lets tests swap in a fake). */
+export interface AppClientLike {
+  connect(): Promise<void>;
+  listTools(): Promise<AppTool[]>;
+  callTool(name: string, args: Record<string, unknown>): Promise<{ content: unknown[]; isError?: boolean }>;
+  close(): Promise<void>;
+}
+
+export class AppClient implements AppClientLike {
   private client: Client | null = null;
   private transport: StreamableHTTPClientTransport | null = null;
 
@@ -21,6 +29,8 @@ export class AppClient {
     private auth: TokenProvider,
     private projectId: string,
     private environment: string,
+    /** Pins every call to this Pipedream account. Without it Pipedream silently picks one. */
+    private accountId?: string,
   ) {}
 
   async connect(): Promise<void> {
@@ -35,6 +45,7 @@ export class AppClient {
         headers.set("x-pd-environment", this.environment);
         headers.set("x-pd-external-user-id", this.externalUserId);
         headers.set("x-pd-app-slug", this.appSlug);
+        if (this.accountId) headers.set("x-pd-account-id", this.accountId);
         return globalThis.fetch(input, { ...init, headers });
       },
     });

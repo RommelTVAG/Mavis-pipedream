@@ -15,13 +15,19 @@ export interface TokenData {
   expiresAt: number;
 }
 
+/** One healthy connected account of an app (an app can have several, e.g. three Outlook mailboxes). */
+export interface AppAccount {
+  id: string;
+  name: string | null;
+}
+
 export interface AppConnection {
   slug: string;
   name: string;
-  accountIds: string[];
+  /** Every healthy account for this app, in Pipedream's order. Never empty. */
+  accounts: AppAccount[];
   healthy: boolean;
   authType: string;
-  accountName: string | null;
 }
 
 export interface PipedreamAccount {
