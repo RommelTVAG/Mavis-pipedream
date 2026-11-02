@@ -1,0 +1,12 @@
+{
+  "name": "mavis-pipedream",
+  "private": true,
+  "description": "Pipedream MCP proxy for Claude Code, installed per operator via a browser-based setup",
+  "scripts": {
+    "bootstrap": "node scripts/bootstrap.mjs",
+    "setup": "node packages/pipedream-mcp-server/dist/setup/cli.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

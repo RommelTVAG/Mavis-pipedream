@@ -1,0 +1,40 @@
+[Unit]
+Description=Mavis Pipedream credentials vault
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mavis-vault
+Group=mavis-vault
+WorkingDirectory=/opt/mavis-vault
+EnvironmentFile=/etc/mavis-vault/vault.env
+ExecStart=/usr/bin/node dist/src/server.js
+Restart=on-failure
+RestartSec=3
+
+# Sandbox: only its own state directory is writable, no privileges, no other users or home directories.
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/mavis-vault
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+CapabilityBoundingSet=
+SystemCallArchitectures=native
+UMask=0077
+MemoryMax=256M
+TasksMax=64
+
+[Install]
+WantedBy=multi-user.target
